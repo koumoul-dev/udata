@@ -7,9 +7,9 @@
   "main": "index.js",
   "scripts": {
     "assets:watch": "webpack --progress --watch",
-    "assets:build": "webpack --progress --config webpack.config.prod.js",
+    "assets:build": "webpack --config webpack.config.prod.js",
     "widgets:watch": "webpack --progress --watch --config webpack.config.widgets.js",
-    "widgets:build": "webpack -p --progress --config webpack.config.widgets.prod.js",
+    "widgets:build": "webpack -p --config webpack.config.widgets.prod.js",
     "oembed:watch": "webpack --progress --watch --config webpack.config.oembed.js",
     "oembed:build": "NODE_ENV='production' webpack -p --progress --config webpack.config.oembed.js",
     "build": "npm run assets:build && npm run widgets:build",
