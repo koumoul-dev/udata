@@ -71,7 +71,7 @@ coverage.xml
 Procfile
 
 # Local configuration file of udata
-udata.cfg
+/udata.cfg
 
 # Local data directory
 data
