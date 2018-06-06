@@ -8,14 +8,16 @@ FROM udata/system AS builder
 
 WORKDIR /udata
 
+RUN apt-get update && apt-get install -y gnupg gcc
+
 # Install nodejs and npm dependencies for webpack build
-RUN apt-get update && apt-get install -y gnupg
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs
 COPY package.json .
 RUN npm install
 
 # Install pip dependencies
+RUN pip install Cython wheel
 COPY requirements ./requirements
 RUN pip install -r ./requirements/develop.pip
 
