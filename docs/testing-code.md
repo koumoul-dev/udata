@@ -19,7 +19,7 @@ ELASTICSEARCH_URL_TEST = 'localhost:9201'
 And then start docker-compose with the extra file:
 
 ```shell
-$ docker-compose -f docker-compose.yml -f docker-compose-test.yml up
+$ docker-compose -f docker-compose.yml -f docker-compose-testing.yml up
 ```
 
 This will start 2 extra services, an Elasticsearch and a MongoDB,
