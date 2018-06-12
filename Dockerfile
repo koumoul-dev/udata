@@ -30,6 +30,7 @@ COPY less ./less
 COPY *.py *.cfg *.js *.yml *.md LICENSE MANIFEST.in ./
 
 # Build
+RUN /udata/venv/bin/python setup.py compile_catalog
 RUN npm run assets:build
 RUN npm run widgets:build
 RUN npm run oembed:build
