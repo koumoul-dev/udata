@@ -17,20 +17,24 @@ COPY package.json .
 RUN npm install
 
 # Install pip dependencies
-RUN pip install Cython wheel
+RUN pip install Cython wheel virtualenv
+RUN virtualenv venv
+RUN /udata/venv/bin/pip install --upgrade pip
 COPY requirements ./requirements
-RUN pip install -r ./requirements/develop.pip
+RUN /udata/venv/bin/pip install -r ./requirements/develop.pip
 
 # Install udata itself from sources in context
 COPY udata ./udata
 COPY js ./js
 COPY less ./less
-COPY *.py *.cfg *.js *.yml *.md ./
+COPY *.py *.cfg *.js *.yml *.md LICENSE MANIFEST.in ./
 
 # Build
-RUN inv assets-build
-RUN inv widgets-build
-RUN inv i18nc
+RUN npm run assets:build
+RUN npm run widgets:build
+RUN npm run oembed:build
+
+RUN /udata/venv/bin/pip install .
 
 # Second part is mostly a clone of the Dockerfile in the separate project docker-udata
 FROM udata/system
@@ -46,18 +50,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean\
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install udata dependencies
-COPY requirements /tmp/requirements/
-RUN pip install -r /tmp/requirements/install.pip
-
-# Install udata from the directory built in the builder stage
-COPY --from=builder /udata /udata
 WORKDIR /udata
-RUN pip install -e .
 
+# Fetch full python env from builder image
+RUN pip install Cython wheel virtualenv
+COPY --from=builder /udata/venv /udata/venv
 # Install dependencies for running udata and some known plugins
-COPY docker/requirements.pip /tmp/requirements/docker.pip
-RUN pip install -r /tmp/requirements/docker.pip
+COPY docker/requirements.pip ./requirements/docker.pip
+RUN /udata/venv/bin/pip install -r ./requirements/docker.pip
 
 RUN mkdir -p /udata/fs /src
 

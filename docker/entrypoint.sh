@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+source /udata/venv/bin/activate
+
 # Install source repositories as editable
 if [ "$(ls -A /src)" ]; then
     for d in /src/*/ ; do
