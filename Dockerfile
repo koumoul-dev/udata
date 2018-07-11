@@ -71,7 +71,10 @@ ENV UDATA_SETTINGS /udata/udata.cfg
 
 EXPOSE 7000 7001
 
-HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:7000/ || exit 1
+# TODO: a better health check ?
+# Calling localhost fails with a 404 when SERVER_NAME is defined in the config,
+# and defining SERVER_NAME is required to be able to use 'udata search index'
+# HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:7000/ || exit 1
 
 ENTRYPOINT ["/udata/entrypoint.sh"]
 CMD ["uwsgi"]
